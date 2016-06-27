@@ -1,0 +1,26 @@
+<h3>
+    Bands
+</h3>
+<button class="btn btn-default" ng-click="vm.create()">Create</button>
+<table class="table table-striped">
+    <thead>
+        <th>Name</th>
+        <th>Email</th>
+        <th>active</th>
+        <th>Created</th>
+        <th>Modified</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr ng-repeat="band in vm.bands">
+            <td><a ui-sref="app.bandprofile({bandId: band._id})">{{band.name}}</a></td>
+            <td>{{band.email}}</td>
+            <td>{{band.active}}</td>
+            <td>{{band.created | date: 'short'}}</td>
+            <td>{{band.modified | date: 'short' }}</td>
+            <td>
+                <a ng-click="vm.edit(band)">Edit</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
