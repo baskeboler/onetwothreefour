@@ -6,10 +6,10 @@ var Q = require('q');
 function all(req, res) {
   var page = req.query.page || 1,
     pageSize = req.query.pageSize || 10,
-    sort = req.query.sort
-  deferred = Q.defer();
+    sort = req.query.sort || 'name',
+    deferred = Q.defer();
   page--;
-  debug(`page=${page}, pageSize=${pageSize}`);
+  debug(`page=${page}, pageSize=${pageSize}, sort=${sort}`);
   Band.count({}, function (err, total) {
     if (err) {
       deferred.resolve(0);
@@ -18,6 +18,7 @@ function all(req, res) {
     }
   });
   Band.find({})
+    .sort(sort)
     .skip(page * pageSize)
     .limit(pageSize)
     .exec(function (err, bands) {

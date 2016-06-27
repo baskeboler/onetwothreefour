@@ -6,10 +6,10 @@ var Q = require('q');
 function all(req, res) {
   var page = req.query.page || 1,
     pageSize = req.query.pageSize || 10,
-    sort = req.query.sort
-  deferred = Q.defer();
+    sort = req.query.sort || 'name',
+    deferred = Q.defer();
   page--;
-  debug(`page=${page}, pageSize=${pageSize}`);
+  debug(`page=${page}, pageSize=${pageSize}, sort=${sort}`);
   Venue.count({}, function (err, total) {
     if (err) {
       deferred.resolve(0);
@@ -19,6 +19,7 @@ function all(req, res) {
   });
 
   Venue.find({})
+    .sort(sort)
     .skip(page * pageSize)
     .limit(_.toNumber(pageSize))
     .exec(function (err, venues) {
