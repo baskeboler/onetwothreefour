@@ -12,7 +12,7 @@
         vm.total = 0;
         vm.page = 1;
         vm.pageSize = 5;
-        vm.maxPageButtons = 10;
+        vm.maxPageButtons = 5;
         vm.center = {};
         vm.markers = [];
         activate();
