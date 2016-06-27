@@ -8,49 +8,55 @@
 </div>
 <br>
 <div class="row">
-    <div class="input-group">
-        <label class="input-group-addon">
-            <i class="glyphicon glyphicon-resize-vertical"></i>
-            Page Size
-        </label>
-        <div class="btn-group">
-            <button class="btn btn-default" ng-click="vm.pageSize=5; vm.loadAll();">5</button>
-            <button class="btn btn-default" ng-click="vm.pageSize=10;vm.loadAll();"> 10</button>
-            <button class="btn btn-default" ng-click="vm.pageSize=15;vm.loadAll();">15</button>
+    <div class="col col-md-6">
+
+        <div class="input-group">
+            <label class="input-group-addon">
+                <i class="glyphicon glyphicon-resize-vertical"></i>
+                Page Size
+            </label>
+            <div class="btn-group">
+                <button class="btn btn-default" ng-click="vm.pageSize=5; vm.loadAll();">5</button>
+                <button class="btn btn-default" ng-click="vm.pageSize=10;vm.loadAll();"> 10</button>
+                <button class="btn btn-default" ng-click="vm.pageSize=15;vm.loadAll();">15</button>
+            </div>
+
+        </div>
+        <div class="row">
+
+            <uib-pagination total-items="vm.total" ng-model="vm.page" ng-change="vm.loadAll()" items-per-page="vm.pageSize" max-size="vm.maxPageButtons"
+                boundary-links="true" boundary-link-numbers="true">
+
+            </uib-pagination>
+        </div>
+        <div class="row">
+            <table class="table table-striped">
+                <thead>
+                    <th>Name</th>
+                    <th>capacity</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="venue in vm.venues">
+                        <td><a ui-sref="app.venueprofile({venueId: venue._id})">{{venue.name}}</a></td>
+                        <td>{{venue.capacity}}</td>
+                        <td>
+                            <a ng-click="vm.edit(band)">Edit</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
+        <div class="row">
+
+            <uib-pagination total-items="vm.total" ng-model="vm.page" ng-change="vm.loadAll()" items-per-page="vm.pageSize" max-size="vm.maxPageButtons"
+                boundary-links="true" boundary-link-numbers="true">
+
+            </uib-pagination>
+        </div>
     </div>
-</div>
-<div class="row">
-
-    <uib-pagination total-items="vm.total" ng-model="vm.page" ng-change="vm.loadAll()" items-per-page="vm.pageSize" max-size="vm.maxPageButtons"
-        boundary-links="true" boundary-link-numbers="true">
-
-    </uib-pagination>
-</div>
-<div class="row">
-    <table class="table table-striped">
-        <thead>
-            <th>Name</th>
-            <th>capacity</th>
-            <th></th>
-        </thead>
-        <tbody>
-            <tr ng-repeat="venue in vm.venues">
-                <td><a ui-sref="app.venueprofile({venueId: venue._id})">{{venue.name}}</a></td>
-                <td>{{venue.capacity}}</td>
-                <td>
-                    <a ng-click="vm.edit(band)">Edit</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<div class="row">
-
-    <uib-pagination total-items="vm.total" ng-model="vm.page" ng-change="vm.loadAll()" items-per-page="vm.pageSize" max-size="vm.maxPageButtons"
-        boundary-links="true" boundary-link-numbers="true">
-
-    </uib-pagination>
+    <div class="col col-md-6">
+        <leaflet center="vm.center" markers="vm.markers" height="400px" width="100%"></leaflet>
+    </div>
 </div>
