@@ -5,7 +5,7 @@ var debug = require('debug')('onetwothreefour:band-router');
 
 router.param('bandId', function(req, res, next, bandId) {
     debug(`captured bandId=${bandId}`);
-    req.bandId = bandId
+    req.bandId = bandId;
     next();
 });
 

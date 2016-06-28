@@ -3,6 +3,8 @@
     angular.module('app', [
         'ngResource',
         'ngAnimate',
+        'ngSanitize',
+        'ui.select',
         'ui.router',
         'ui.bootstrap',
         'nemLogging',
@@ -76,6 +78,16 @@
                         }
                     }
                 }  
+            })
+            .state('app.tourdetails', {
+                url: '/tourdetails',
+                views: {
+                    'contentView@': {
+                        templateUrl: '/partials/bands/tour/details.html',
+                        controller: 'TourDetailsController',
+                        controllerAs: 'vm'
+                    }
+                }
             })
             .state('app.venue', {
                 url: '/venues' ,

@@ -16,7 +16,7 @@ function defaultOptions() {
 
 function buildSearchCityUrl(city) {
     var opts = _.assign({}, defaultOptions());
-    opts.query.city = city;
+    opts.query.city = `${city}`;
     opts.query.addressdetails = 1;
     return url.format(opts);  
 }

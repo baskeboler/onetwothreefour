@@ -5,9 +5,16 @@
         <div class="panel panel-default">
             <div class="panel-heading">
 
-                <h5>Current location</h5>
+                <h5 class="panel-title">
+                    Current location
+                    <span ng-click="vm.mapCollapsed=!vm.mapCollapsed;">
+                        <i class="glyphicon pull-right" 
+                            ng-class="{'glyphicon-minus': !vm.mapCollapsed, 'glyphicon-plus': vm.mapCollapsed}"></i>
+                    </span>
+                    
+                </h5>
             </div>
-            <div class="panel-body">
+            <div class="panel-body" uib-collapse="vm.mapCollapsed">
 
                 <leaflet center="vm.center" width="100%" height="300px"></leaflet>
             </div>
@@ -17,10 +24,22 @@
         <div class="panel panel-default">
             <div class="panel-heading">
 
-                <h5>Upcoming tour legs</h5>
+                <h5 class="panel-title">
+                    Upcoming tour legs
+                    <span ng-click="vm.tourLegsCollapsed=!vm.tourLegsCollapsed;">
+                        <i class="glyphicon pull-right" 
+                            ng-class="{'glyphicon-minus': !vm.tourLegsCollapsed, 'glyphicon-plus': vm.tourLegsCollapsed}"></i>
+                    </span>
+                </h5>
             </div>
-            <div class="panel-body">
-                <a href="#" class="btn btn-default">Add tour leg</a>
+            <div class="panel-body" uib-collapse="vm.tourLegsCollapsed">
+                <p>
+                <a href="#" class="btn btn-default btn-sm">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    Add tour leg
+                </a>
+
+                </p>
                 <div class="list-group">
                     <a href="#" class="list-group-item">
                         <h5 class="list-group-item-heading">
@@ -36,6 +55,58 @@
                         </h5>
                         <p class="list-group-item-text">
                             Desde 3/1/2017 a 5/1/2017
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h5 class="panel-title">
+                    Additional Information
+                     <span ng-click="vm.additionalInfoCollapsed=!vm.additionalInfoCollapsed;">
+                        <i class="glyphicon pull-right" 
+                            ng-class="{'glyphicon-minus': !vm.additionalInfoCollapsed, 'glyphicon-plus': vm.additionalInfoCollapsed}"></i>
+                    </span>
+                </h5>
+            </div>
+            <div class="panel-body" uib-collapse="vm.additionalInfoCollapsed">
+                <div class="list-group">
+                    <div  class="list-group-item">
+                        <p>
+
+                            Bio
+                            <button  class="btn btn-default btn-sm pull-right">
+                                Add bio
+                            </button>
+                        </p>
+                    </div>
+                    <div href="" class="list-group-item">
+                          <p>
+                              Past tours
+                              <button class="btn btn-default btn-sm pull-right">
+                                  Add details
+                              </button>
+                              </p>  
+                    </div>
+                    <a href="" class="list-group-item">
+                        <h5 class="list-group-item-heading">
+                            EPK (Electronic Press Kit)
+                        </h5>
+                        <p class="list-group-item-text"></p>
+                    </a>
+                    <a href="" class="list-group-item">
+                        <h5 class="list-group-item-heading">
+                            Records
+                        </h5>
+                        <p class="list-group-item-text"></p>
+                    </a>
+                    <a href="" class="list-group-item">
+                        <h5 class="list-group-item-heading">
+                            Pictures
+                        </h5>
+                        <p class="list-group-item-text">
+
                         </p>
                     </a>
                 </div>

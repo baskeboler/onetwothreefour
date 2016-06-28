@@ -16,9 +16,19 @@
     "jade": "~1.11.0",
     "lodash": "^4.13.1",
     "mongoose": "^4.5.1",
+    "mongoose-crate": "^1.0.11",
+    "mongoose-crate-gm": "^1.0.1",
+    "mongoose-crate-localfs": "^1.1.2",
     "mongoose-geojson-schema": "^2.1.1",
     "morgan": "~1.7.0",
+    "multer": "^1.1.0",
     "q": "^1.4.1",
     "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^2.13.1",
+    "eslint-config-standard": "^5.3.1",
+    "eslint-plugin-standard": "^1.3.2",
+    "gulp-clean-css": "^2.0.10"
   }
 }

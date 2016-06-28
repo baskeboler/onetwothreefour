@@ -1,5 +1,6 @@
 var express = require('express');
 require('./init_mongo');
+var config = require('./config/config');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -10,10 +11,12 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var bands = require('./routes/band');
 var venues = require('./routes/venue');
+var pictures = require('./routes/picture');
 var geocoding = require('./routes/geocoding');
 
 var app = express();
-
+var multer = require('multer');
+var upload = multer({ dest: config.uploadsDir });
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -31,6 +34,7 @@ app.use('/users', users);
 app.use('/api/band', bands);
 app.use('/api/venue', venues);
 app.use('/api/geocoding', geocoding);
+app.use('/api/pictures', upload.fields([{name: 'image'}]), pictures);
 
 
 // catch 404 and forward to error handler
