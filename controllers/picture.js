@@ -3,18 +3,18 @@ var debug = require('debug')('onetwothreefour:picture-controller');
 
 function upload(req, res, next) {
     var reference = req.reference;
-    var post = new Picture({
+    var picture = new Picture({
         reference: reference
     });
     debug('upload request');
     debug(`reference=${reference}`);
-    post.attach('image', req.files.image[0], (err) => {
+    picture.attach('image', req.files.image[0], (err) => {
         if (err) {
             return next(err);
         }
-        post.save((err) => {
+        picture.save((err) => {
             if (err) return next(err);
-            res.send(post);
+            res.send(picture);
         });
     });
 }

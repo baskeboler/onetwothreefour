@@ -1,0 +1,11 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{vm.config.title}} <small>{{vm.config.subtitle}}</small></h4>
+</div>
+<div class="modal-body">
+    <span ng-bind-html="vm.config.content"></span>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="vm.ok()">
+        Ok
+    </button>
+</div>

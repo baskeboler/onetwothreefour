@@ -1,0 +1,26 @@
+<ol class="breadcrumb">
+    <li>
+        <a ui-sref="app.band">Bands</a>
+    </li>
+    <li>
+        <a ui-sref="app.bandprofile({bandId: vm.band._id})">Profile</a>
+    </li>
+    <li>
+        Bio
+    </li>
+</ol>
+
+<form class="form" ng-submit="vm.saveBio()">
+     <div class="form-group">
+        <textarea ui-tinymce ng-model="vm.band.bio"></textarea>
+     </div>
+     <div class="form-group">
+         <button class="btn btn-warning" type="button" ng-click="vm.back()">
+             Cancel
+         </button>
+         <button class="btn btn-default" type="submit">
+             Save
+         </button>
+     </div>
+
+</form>

@@ -3,10 +3,16 @@ var router = express.Router();
 var bandController = require('../controllers/band');
 var debug = require('debug')('onetwothreefour:band-router');
 
-router.param('bandId', function(req, res, next, bandId) {
-    debug(`captured bandId=${bandId}`);
-    req.bandId = bandId;
-    next();
+router.param('bandId', function (req, res, next, bandId) {
+  debug(`captured bandId=${bandId}`);
+  req.bandId = bandId;
+  next();
+});
+
+router.param('pictureIndex', (req, res, next, pictureIndex) => {
+  debug(`captured pictureIndex=${pictureIndex}`);
+  req.pictureIndex = pictureIndex;
+  next();
 });
 
 router.route('/')
@@ -17,5 +23,8 @@ router.route('/')
 router.route('/:bandId')
   .get(bandController.get)
   .delete(bandController.remove);
-
+router.route('/:bandId/pictures')
+  .post(bandController.uploadPicture);
+router.route('/:bandId/pictures/:pictureIndex')
+  .get(bandController.getPicture);
 module.exports = router;

@@ -8,6 +8,7 @@ var BandSchema = new Schema({
   country: String,
   neighbourhood: String,
   bio: String,
+  pictures: [Schema.Types.ObjectId],
   homepage: String,
   facebook: String,
   twitter: String,
@@ -22,7 +23,8 @@ BandSchema.pre('save', function(next) {
   }
   this.modified = new Date();
   next();
-})
+});
+
 var BandModel = mongoose.model('Band', BandSchema);
 
 module.exports = BandModel;

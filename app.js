@@ -31,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/libs', express.static(path.join(__dirname, 'bower_components')));
 app.use('/', routes);
 app.use('/users', users);
+app.use('/api/band/:bandId/pictures', upload.fields([{name: 'image'}]));
 app.use('/api/band', bands);
 app.use('/api/venue', venues);
 app.use('/api/geocoding', geocoding);

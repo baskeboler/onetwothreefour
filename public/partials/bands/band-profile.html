@@ -1,5 +1,14 @@
-<h3>Band Profile</h3>
-<h4>{{vm.band.name}}</h4>
+<ol class="breadcrumb">
+    <li>
+        <a ui-sref="app.band">Bands</a>
+    </li>
+    <li>
+        <a ui-sref="app.bandprofile({bandId: vm.band._id})">Profile</a>
+    </li>
+    <li>
+        {{vm.band.name}}
+    </li>
+</ol>
 <div class="row">
     <div class="col col-md-6">
         <div class="panel panel-default">
@@ -76,15 +85,20 @@
                         <p>
 
                             Bio
-                            <button  class="btn btn-default btn-sm pull-right">
-                                Add bio
-                            </button>
+                            <span class="btn-group btn-group-sm pull-right">
+                                <button ng-disabled="!vm.band.bio" class="btn btn-default" ng-click="vm.viewBio()">
+                                    View
+                                </button>
+                                <button ui-sref="app.bandprofile.bio({bandId: vm.band._id})" class="btn btn-default">
+                                    Edit bio
+                                </button>
+                            </span>
                         </p>
                     </div>
                     <div href="" class="list-group-item">
                           <p>
                               Past tours
-                              <button class="btn btn-default btn-sm pull-right">
+                              <button ui-sref="app.tourdetails" class="btn btn-default btn-sm pull-right">
                                   Add details
                               </button>
                               </p>  
@@ -95,20 +109,23 @@
                         </h5>
                         <p class="list-group-item-text"></p>
                     </a>
-                    <a href="" class="list-group-item">
+                    <a  class="list-group-item">
                         <h5 class="list-group-item-heading">
                             Records
                         </h5>
                         <p class="list-group-item-text"></p>
                     </a>
-                    <a href="" class="list-group-item">
-                        <h5 class="list-group-item-heading">
+                    <div  class="list-group-item">
+                        <p>
                             Pictures
-                        </h5>
-                        <p class="list-group-item-text">
-
+                            <span class="btn-group btn-group-sm pull-right">
+                                <button ui-sref="app.bandprofile.pictures({bandId: vm.band._id})" 
+                                class="btn btn-default" >
+                                    View
+                                </button>
+                            </span>
                         </p>
-                    </a>
+                    </div>
                 </div>
             </div>
         </div>

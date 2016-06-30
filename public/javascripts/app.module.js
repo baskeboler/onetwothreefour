@@ -9,7 +9,10 @@
         'ui.bootstrap',
         'nemLogging',
         'ui-leaflet',
-        'ui.calendar'
+        'ui.calendar',
+        'ui.tinymce',
+        'ui-notification',
+        'ngFileUpload'
     ]);
 
     angular.module('app')
@@ -78,6 +81,36 @@
                         }
                     }
                 }  
+            })
+            .state('app.bandprofile.bio', {
+                url: '/bio',
+                views: {
+                    'contentView@': {
+                        templateUrl: '/partials/bands/bio.html',
+                        controller: 'BandProfileBioController',
+                        controllerAs: 'vm',
+                        resolve: {
+                            band: ['$stateParams', 'Band', function($stateParams, Band) {
+                                return Band.get({id: $stateParams.bandId}).$promise;
+                            }]
+                        }
+                    }
+                }
+            })
+            .state('app.bandprofile.pictures', {
+                url: '/pictures',
+                views: {
+                    'contentView@': {
+                        templateUrl: '/partials/bands/pictures.html',
+                        controller: 'BandPicturesController',
+                        controllerAs: 'vm',
+                        resolve: {
+                            band: ['$stateParams', 'Band', function($stateParams, Band) {
+                                return Band.get({id: $stateParams.bandId}).$promise;
+                            }]
+                        }
+                    }
+                }
             })
             .state('app.tourdetails', {
                 url: '/tourdetails',

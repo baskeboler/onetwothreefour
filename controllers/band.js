@@ -1,4 +1,5 @@
 var Band = require('../models/band');
+var Picture = require('../models/picture');
 var debug = require('debug')('onetwothreefour:band-controller');
 var _ = require('lodash');
 var Q = require('q');
@@ -44,12 +45,49 @@ function create(req, res) {
       res.status(500).send({ message: 'db error' });
     }
     res.send(savedBand);
-  })
+  });
+}
+function uploadPicture(req, res, next) {
+  var bandId = req.bandId;
+  var picture = new Picture({
+    reference: bandId
+  });
+  debug('upload request');
+  debug(`reference=${bandId}`);
+  picture.attach('image', req.files.image[0], (err) => {
+    if (err) return next(err);
+    picture.save((err, picture) => {
+      if (err) return next(err);
+      Band.findById(bandId, (err, band) => {
+        if (err) return next(err);
+        if (!band.pictures) band.pictures = [];
+        band.pictures.push(picture.id);
+        band.save((err, savedBand) => {
+          if (err) return next(err);
+          res.send(savedBand);
+        });
+      });
+    });
+  });
 }
 
+function getPicture(req, res, next) {
+  var bandId = req.bandId;
+  var pictureIndex = req.pictureIndex;
+  var size = req.query.size || 'original'; //original, small, medium
+  Band.findById(bandId, (err, band) => {
+    if (err) return next(err);
+    if (pictureIndex>= band.pictures.length) return next('invalid index');
+    var pictureId = band.pictures[pictureIndex];
+    Picture.findById(pictureId, (err, picture) => {
+      if (err) return next(err);
+      res.sendFile(picture.image[size].url);
+    });
+  });
+}
 function update(req, res) {
   var band = req.body;
-  Band.findById(band._id, function (err, result) {
+  Band.findById(band._id, (err, result) => {
     if (err) {
       debug(err);
       res.status(500).send({ message: 'db error' });
@@ -105,5 +143,7 @@ module.exports = {
   create: create,
   get: get,
   remove: remove,
-  update: update
+  update: update,
+  uploadPicture: uploadPicture,
+  getPicture: getPicture
 };

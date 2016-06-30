@@ -3,41 +3,43 @@
 </h3>
 <div class="row">
     <div class="col col-md-8">
-
-        <form class="form-horizontal" ng-submit="vm.addLeg()">
+        <p>
+            when/where did you tour?
+        </p>
+        <form class="form" ng-submit="vm.addLeg()">
             <fieldset>
-            <div class="row">
-                <div class="col col-md-8">
-                    <div class="form-group">
-                        <label for="">Start</label>
-                        <input required type="date" class="form-control" ng-model="vm.leg.start" ng-change="vm.leg.end=vm.leg.start">
-                    </div>
-                    <div class="form-group">
-                        <label for="">End</label>
-                        <input required type="date" class="form-control" ng-model="vm.leg.end">
-                    </div>
-                    <div class="form-group">
-                        <label for="">
+                <div class="row">
+                    <div class="col col-md-8">
+                        <div class="form-group">
+                            <label for="">Start</label>
+                            <input required type="date" class="form-control" ng-model="vm.leg.start" ng-change="vm.leg.end=vm.leg.start">
+                        </div>
+                        <div class="form-group">
+                            <label for="">End</label>
+                            <input required type="date" class="form-control" ng-model="vm.leg.end">
+                        </div>
+                        <div class="form-group">
+                            <label for="">
                     Location
                 </label>
-                        <ui-select ng-model="vm.leg.location" theme="bootstrap" on-select="vm.onSelect($item, $model)">
-                            <ui-select-match placeholder="Select a city ...">
-                                {{$select.selected.display_name || $select.selected}}
-                            </ui-select-match>
-                            <ui-select-choices repeat="location as location in vm.locations track by $index" refresh="vm.search($select.search)" refresh-delay="1000"
-                                minimun-input-length="3">
-                                <img src="" ng-src="{{location.icon}}" alt="">
-                                <span ng-bind-html="location.display_name | highlight: $select.search"></span>
-                            </ui-select-choices>
-                        </ui-select>
-                        <br>
+                            <ui-select ng-model="vm.leg.location" theme="bootstrap" on-select="vm.onSelect($item, $model)">
+                                <ui-select-match placeholder="Select a city ...">
+                                    {{$select.selected.display_name || $select.selected}}
+                                </ui-select-match>
+                                <ui-select-choices repeat="location as location in vm.locations track by $index" refresh="vm.search($select.search)" refresh-delay="1000"
+                                    minimun-input-length="3">
+                                    <img src="" ng-src="{{location.icon}}" alt="">
+                                    <span ng-bind-html="location.display_name | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="col col-md-4">
+                        <leaflet center="vm.center" markers="vm.markers" height="300px" width="100%"> </leaflet>
+
                     </div>
                 </div>
-                <div class="col col-md-4">
-                    <leaflet center="vm.center" markers="vm.markers" height="300px" width="100%"> </leaflet>
-
-                </div>
-            </div>
             </fieldset>
             <div class="row">
                 <div class="form-group">

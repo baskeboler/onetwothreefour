@@ -1,0 +1,37 @@
+<ol class="breadcrumb">
+    <li>
+        <a ui-sref="app.band">Band</a>
+    </li>
+    <li>
+        <a ui-sref="app.bandprofile({bandId: vm.band._id})">Profile</a>
+    </li>
+    <li>
+        Pictures
+    </li>
+</ol>
+<div class="row">
+    <div class="col col-md-9">
+        <div class="col col-md-3" ng-repeat="image in vm.imageLinks">
+            <img src="{{image}}" class="thumbnail" alt="band picture">
+        </div>
+
+    </div>
+    <div class="col col-md-3">
+        <div class="well">
+            <form class="form">
+                <button class="btn btn-default" ngf-select ng-model="vm.uploads" ngf-multiple="true">
+                    <i class="glyphicon glyphicon-folder-open"></i>
+                    Select
+                </button>
+                <button class="btn btn-default" ng-click="vm.upload()">
+                    <i class="glyphicon glyphicon-upload"></i>
+                    Upload
+                </button>
+            </form>
+            <div class="row" ng-repeat="file in vm.uploads track by $index">
+                {{file.name}}
+                <uib-progressbar percent="vm.progress[$index]" max="100"></uib-progressbar>
+            </div>
+        </div>
+    </div>
+</div>
