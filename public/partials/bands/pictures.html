@@ -10,12 +10,6 @@
     </li>
 </ol>
 <div class="row">
-    <div class="col col-md-9">
-        <div class="col col-md-3" ng-repeat="image in vm.imageLinks">
-            <img src="{{image}}" class="thumbnail" alt="band picture">
-        </div>
-
-    </div>
     <div class="col col-md-3">
         <div class="well">
             <form class="form">
@@ -34,4 +28,23 @@
             </div>
         </div>
     </div>
+    <div class="col col-md-9">
+        <div masonry>
+            <div class="masonry-brick" ng-repeat="image in vm.imageLinks track by $index">
+                <div class="thumbnail">
+                    <img ng-src="{{image}}" class="img-rounded" alt="band picture">
+                    <div class="caption">
+                        <p>
+                            <button class="btn btn-danger btn-block" ng-click="vm.remove($index)">
+                                <i class="glyphicon glyphicon-trash"></i>
+                                Delete
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
 </div>

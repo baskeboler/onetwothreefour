@@ -85,6 +85,32 @@ function getPicture(req, res, next) {
     });
   });
 }
+
+function removePicture(req, res, next) {
+  var bandId = req.bandId;
+  var pictureIndex = req.pictureIndex;
+  Band.findById(bandId, (err, band) => {
+    if (err) return next(err);
+    if (pictureIndex>= band.pictures.length) return next('invalid index');
+    var pictureId = band.pictures[pictureIndex];
+    debug(`pictureId: ${pictureId}`);
+    debug(`pictures before splice: ${band.pictures}`);
+    band.pictures.splice(pictureIndex, 1);
+    debug(`pictures after splice: ${band.pictures}`);
+    debug(`removed index ${pictureIndex} from pictures`);
+    band.save((err) => {
+      if (err) return next(err);
+      debug(`saved band with pictures ${band.pictures}`);
+      Picture.findById(pictureId, (err, picture) => {
+        if (err) return next(err);
+        picture.remove((err) => {
+          if (err) return next(err);
+          res.send(band);
+        });
+      });
+    });
+  });
+}
 function update(req, res) {
   var band = req.body;
   Band.findById(band._id, (err, result) => {
@@ -145,5 +171,6 @@ module.exports = {
   remove: remove,
   update: update,
   uploadPicture: uploadPicture,
-  getPicture: getPicture
+  getPicture: getPicture,
+  removePicture: removePicture
 };

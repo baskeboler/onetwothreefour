@@ -26,5 +26,6 @@ router.route('/:bandId')
 router.route('/:bandId/pictures')
   .post(bandController.uploadPicture);
 router.route('/:bandId/pictures/:pictureIndex')
-  .get(bandController.getPicture);
+  .get(bandController.getPicture)
+  .delete(bandController.removePicture);
 module.exports = router;

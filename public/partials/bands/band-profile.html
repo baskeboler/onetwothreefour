@@ -28,6 +28,26 @@
                 <leaflet center="vm.center" width="100%" height="300px"></leaflet>
             </div>
         </div>
+        <div class="panel panel-default" ng-if="vm.slides.length">
+            <div class="panel-heading">
+                <h5 class="panel-title">
+                    Pictures
+                    <span ng-click="vm.picsCollapsed=!vm.picsCollapsed;">
+                            <i class="glyphicon pull-right" 
+                                ng-class="{'glyphicon-minus': !vm.picsCollapsed, 'glyphicon-plus': vm.picsCollapsed}"></i>
+                    </span>
+                </h5>
+            </div>
+            <div class="panel-body" uib-collapse="vm.picsCollapsed">
+                <div style="">
+                    <uib-carousel active="vm.activeSlide">
+                        <uib-slide ng-repeat="slide in vm.slides track by $index" index="$index">
+                            <img ng-src="{{slide.url}}" alt=""  style="margin:auto;">
+                        </uib-slide>
+                    </uib-carousel>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="col col-md-6">
         <div class="panel panel-default">

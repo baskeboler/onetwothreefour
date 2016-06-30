@@ -18,20 +18,20 @@ PictureSchema.plugin(crate, {
     fields: {
         image: {
             processor: new GraphicsMagick({
-                tmpDir: config.uploadsDir, // Where transformed files are placed before storage, defaults to os.tmpdir()
+                tmpDir: config.tmpDir, // Where transformed files are placed before storage, defaults to os.tmpdir()
                 imageMagick: true,
                 formats: ['JPEG', 'GIF', 'PNG'], // Supported formats, defaults to ['JPEG', 'GIF', 'PNG', 'TIFF']
                 transforms: {
                     original: {
                         // keep the original file
-                        format: '.jpg'
+                        // format: '.jpg'
                     },
                     small: {
-                        resize: '150x150',
+                        thumbnail: '150x150',
                         format: '.jpg'
                     },
                     medium: {
-                        resize: '250x250',
+                        thumbnail: '250x250',
                         format: '.jpg'
                     }
                 }

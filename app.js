@@ -16,7 +16,7 @@ var geocoding = require('./routes/geocoding');
 
 var app = express();
 var multer = require('multer');
-var upload = multer({ dest: config.uploadsDir });
+var upload = multer({ dest: config.tmpDir });
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

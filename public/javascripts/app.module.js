@@ -12,7 +12,8 @@
         'ui.calendar',
         'ui.tinymce',
         'ui-notification',
-        'ngFileUpload'
+        'ngFileUpload',
+        'wu.masonry'
     ]);
 
     angular.module('app')
