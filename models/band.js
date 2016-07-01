@@ -2,12 +2,27 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var BandSchema = new Schema({
-  name: String,
-  email: String,
-  city: String,
-  country: String,
+  name: {
+    type: String,
+    text: true
+  },
+  email: {
+    type: String,
+    text: true
+  },
+  city: {
+    type: String,
+    text: true
+  },
+  country: {
+    type: String,
+    text: true
+  },
   neighbourhood: String,
-  bio: String,
+  bio: {
+    type: String,
+    text: true
+  },
   pictures: [Schema.Types.ObjectId],
   homepage: String,
   facebook: String,
@@ -17,7 +32,7 @@ var BandSchema = new Schema({
   modified: Date
 });
 
-BandSchema.pre('save', function(next) {
+BandSchema.pre('save', function (next) {
   if (!this.created) {
     this.created = new Date();
   }

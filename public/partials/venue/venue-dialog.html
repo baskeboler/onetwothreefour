@@ -1,0 +1,42 @@
+<div class="modal-header">
+    <h3 class="modal-title">
+        Create Venue
+    </h3>
+</div>
+<form  class="form" ng-submit="vm.ok()">
+
+<div class="modal-body">
+    <div class="form-group">
+        <label for="">
+            Name
+        </label>
+        <input type="text" ng-model="vm.venue.name" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="">
+            Capacity
+        </label>
+        <div class="input-group">
+        <input type="number" class="form-control" ng-model="vm.venue.capacity" required>
+        <div class="input-group-addon">People</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="">Location</label>
+        <leaflet id="venue-dialog-map" center="vm.center" marker="vm.marker" height="200px" width="100%">
+
+        </leaflet>
+        <p class="help-text">
+            Search for an address, city or town.
+        </p>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" type="button" ng-click="vm.cancel()">
+        Cancel
+    </button>
+    <button class="btn btn-primary" type="submit">
+        Save
+    </button>
+</div>
+</form>

@@ -29,7 +29,8 @@
     "angular-ui-tinymce": "^0.0.16",
     "angular-ui-notification": "^0.2.0",
     "ng-file-upload": "^12.0.4",
-    "angular-masonry": "^0.16.0"
+    "angular-masonry": "^0.16.0",
+    "leaflet-geosearch": "^1.1.0"
   },
   "resolutions": {
     "angular": "1.5.7"

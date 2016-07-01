@@ -3,6 +3,7 @@ var Picture = require('../models/picture');
 var debug = require('debug')('onetwothreefour:band-controller');
 var _ = require('lodash');
 var Q = require('q');
+var search = require('./search');
 
 function all(req, res) {
   var page = req.query.page || 1,
@@ -172,5 +173,6 @@ module.exports = {
   update: update,
   uploadPicture: uploadPicture,
   getPicture: getPicture,
-  removePicture: removePicture
+  removePicture: removePicture,
+  search: search(Band)
 };

@@ -5,8 +5,8 @@
         .module('app')
         .controller('VenueController', VenueController);
 
-    VenueController.$inject = ['Venue', '_', 'Utilities', 'leafletData' ];
-    function VenueController(Venue, _, Utilities,leafletData) {
+    VenueController.$inject = ['Venue', '_', 'Utilities', 'leafletData', '$uibModal', '$log'];
+    function VenueController(Venue, _, Utilities, leafletData, $uibModal,$log) {
         var vm = this;
         vm.loadAll = loadAll;
         vm.total = 0;
@@ -15,13 +15,31 @@
         vm.maxPageButtons = 5;
         vm.center = {};
         vm.markers = [];
+        vm.create = create;
         activate();
 
         ////////////////
-
+        function create() {
+            var modal = $uibModal.open({
+                templateUrl: '/partials/venue/venue-dialog.html',
+                controller: 'VenueDialogController',
+                controllerAs: 'vm',
+                size: 'lg',
+                resolve: { 
+                    venue: function() {
+                        return {};
+                    }
+                }
+            });
+            modal.result.then(function(newVenue) {
+                $log.info('i got a new venue');
+            }, function(reason) {
+                $log.info('dialog was dismissed');
+            });
+        }
         function activate() {
             vm.loadAll();
-            leafletData.getMap().then(function (map) {
+            leafletData.getMap('venue-list-map').then(function (map) {
                 vm.map = map;
             });
         }

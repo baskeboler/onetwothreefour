@@ -2,6 +2,7 @@ var Venue = require('../models/venue');
 var debug = require('debug')('onetwothreefour:venue-controller');
 var _ = require('lodash');
 var Q = require('q');
+var search = require('./search');
 
 function all(req, res) {
   var page = req.query.page || 1,
@@ -107,5 +108,6 @@ module.exports = {
   create: create,
   get: get,
   remove: remove,
-  update: update
+  update: update,
+  search: search(Venue)
 };

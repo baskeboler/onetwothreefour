@@ -15,10 +15,18 @@ router.param('pictureIndex', (req, res, next, pictureIndex) => {
   next();
 });
 
+router.param('searchString', (req, res, next, searchString) => {
+  debug(`captured search string: ${searchString}`);
+  req.searchString = searchString;
+  next();
+});
+
 router.route('/')
   .get(bandController.all)
   .post(bandController.create)
   .put(bandController.update);
+router.route('/search/:searchString')
+  .get(bandController.search);
 
 router.route('/:bandId')
   .get(bandController.get)

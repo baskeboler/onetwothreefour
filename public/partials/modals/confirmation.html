@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <p class="modal-title">
+        {{vm.config.title}}
+    </p>
+</div>
+<div class="modal-body">
+    <p>{{vm.config.question}}</p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" ng-click="vm.cancel()">
+        Cancel
+    </button>
+    <button class="btn btn-primary" ng-click="vm.ok()">
+        OK
+    </button>
+</div>
