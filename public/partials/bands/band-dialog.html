@@ -3,21 +3,21 @@
     <div class="modal-body">
         <div class="form-group">
             <label>Name</label>
-            <input class="form-control" ng-model="vm.band.name" type="text">
+            <input class="form-control" ng-model="vm.band.name" type="text" required>
         </div>
         <div class="form-group">
             <label>Email</label>
-            <input class="form-control" ng-model="vm.band.email" type="email">
+            <input class="form-control" ng-model="vm.band.email" type="email" required>
         </div>
         <div class="form-group">
             <label>Country</label>
             <input class="form-control" 
                    ng-model="vm.band.country" 
                    type="text"
-                   uib-typeahead="city.address.country for city in vm.searchCountry($viewValue)"
+                   uib-typeahead="country.name.common for country in vm.searchCountry($viewValue)"
                    typeahead-loading="vm.loadingCountries"
                    typeahead-no-results="vm.noCountryResults"
-                   >
+                   required>
             <i ng-show="vm.loadingCountries" class="glyphicon glyphicon-refresh"></i>
             <div ng-show="vm.noCountryResults">
                 <i class="glyphicon glyphicon-remove"></i> No results.
@@ -26,12 +26,13 @@
         <div class="form-group">
             <label>City</label>
             <input class="form-control" 
+                   ng-disabled="!vm.band.country"
                    ng-model="vm.band.city" 
                    type="text"
                    uib-typeahead="city.name for city in vm.searchCity($viewValue)"
                    typeahead-loading="vm.loadingCities"
                    typeahead-no-results="vm.noCityResults"
-                   >
+                   required>
             <i ng-show="vm.loadingCities" class="glyphicon glyphicon-refresh"></i>
             <div ng-show="vm.noCityResults">
                 <i class="glyphicon glyphicon-remove"></i> No results.

@@ -56,15 +56,15 @@ function uploadPicture(req, res, next) {
   debug('upload request');
   debug(`reference=${bandId}`);
   picture.attach('image', req.files.image[0], (err) => {
-    if (err) return next(err);
+    if (err) return handleError(err, res);
     picture.save((err, picture) => {
-      if (err) return next(err);
+      if (err) return handleError(err, res);
       Band.findById(bandId, (err, band) => {
-        if (err) return next(err);
+        if (err) return handleError(err, res);
         if (!band.pictures) band.pictures = [];
         band.pictures.push(picture.id);
         band.save((err, savedBand) => {
-          if (err) return next(err);
+          if (err) return handleError(err, res);
           res.send(savedBand);
         });
       });
@@ -74,42 +74,74 @@ function uploadPicture(req, res, next) {
 
 function getPicture(req, res, next) {
   var bandId = req.bandId;
-  var pictureIndex = req.pictureIndex;
+  var pictureId = req.pictureId;
   var size = req.query.size || 'original'; //original, small, medium
   Band.findById(bandId, (err, band) => {
-    if (err) return next(err);
-    if (pictureIndex>= band.pictures.length) return next('invalid index');
-    var pictureId = band.pictures[pictureIndex];
-    Picture.findById(pictureId, (err, picture) => {
-      if (err) return next(err);
-      res.sendFile(picture.image[size].url);
-    });
+    if (err) {
+      handleError(err, res);
+    } else {
+      var f = _.find(band.pictures, function (id) {
+        debug(`comparing ${id} with ${pictureId}`);
+        var comparison = id == pictureId;
+        debug(`comparison is ${comparison}`);
+        return comparison;
+      });
+      debug(`find returned ${f}`);
+      if (f) {
+        Picture.findById(pictureId, (err, picture) => {
+          if (err) return handleError(err, res);
+          res.sendFile(picture.image[size].url);
+        });
+      } else {
+        res.status(404).send({message: 'picture not found'});
+      }
+
+    }
   });
+}
+
+function handleError(err, res) {
+  debug(`error: ${err.message}`);
+  res.status(500);
+  res.send({ message: err.message });
 }
 
 function removePicture(req, res, next) {
   var bandId = req.bandId;
-  var pictureIndex = req.pictureIndex;
+  var pictureId = req.pictureId;
   Band.findById(bandId, (err, band) => {
-    if (err) return next(err);
-    if (pictureIndex>= band.pictures.length) return next('invalid index');
-    var pictureId = band.pictures[pictureIndex];
-    debug(`pictureId: ${pictureId}`);
-    debug(`pictures before splice: ${band.pictures}`);
-    band.pictures.splice(pictureIndex, 1);
-    debug(`pictures after splice: ${band.pictures}`);
-    debug(`removed index ${pictureIndex} from pictures`);
-    band.save((err) => {
-      if (err) return next(err);
-      debug(`saved band with pictures ${band.pictures}`);
-      Picture.findById(pictureId, (err, picture) => {
-        if (err) return next(err);
-        picture.remove((err) => {
-          if (err) return next(err);
-          res.send(band);
-        });
+    if (err) return handleError(err);
+    else {
+      debug(`pictureId: ${pictureId}`);
+      var f = _.find(band.pictures, function (id) {
+        debug(`comparing ${id} with ${pictureId}`);
+        var comparison = id == pictureId;
+        debug(`comparison is ${comparison}`);
+        return comparison;
       });
-    });
+      debug(`find returned ${f}`);
+      if (f) {
+        debug(`pictures before pull: ${band.pictures}`);
+        // _.pull(band.pictures, pictureId);
+        band.pictures = _.filter(band.pictures, (p) => {
+          return p != pictureId;
+        });
+        // band.pictures.splice(pictureIndex, 1);
+        debug(`pictures after pull: ${band.pictures}`);
+        debug(`removed id ${pictureId} from pictures`);
+        band.save((err) => {
+          if (err) return handleError(err, res);
+          debug(`saved band with pictures ${band.pictures}`);
+          Picture.findById(pictureId, (err, picture) => {
+            if (err) return handleError(err, res);
+            picture.remove((err) => {
+              if (err) return handleError(err, res);
+              res.send(band);
+            });
+          });
+        });
+      } else res.status(404).send({message: 'picture not found'});
+    }
   });
 }
 function update(req, res) {

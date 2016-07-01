@@ -9,9 +9,9 @@ router.param('bandId', function (req, res, next, bandId) {
   next();
 });
 
-router.param('pictureIndex', (req, res, next, pictureIndex) => {
-  debug(`captured pictureIndex=${pictureIndex}`);
-  req.pictureIndex = pictureIndex;
+router.param('pictureId', (req, res, next, pictureId) => {
+  debug(`captured pictureId=${pictureId}`);
+  req.pictureId = pictureId;
   next();
 });
 
@@ -33,7 +33,7 @@ router.route('/:bandId')
   .delete(bandController.remove);
 router.route('/:bandId/pictures')
   .post(bandController.uploadPicture);
-router.route('/:bandId/pictures/:pictureIndex')
+router.route('/:bandId/pictures/:pictureId')
   .get(bandController.getPicture)
   .delete(bandController.removePicture);
 module.exports = router;

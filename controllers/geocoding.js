@@ -2,6 +2,7 @@ const url = require('url');
 const _ = require('lodash');
 var http = require('http');
 var debug = require('debug')('onetwothreefour:geocoding-controller');
+var countries = require('../loadCountries');
 
 function defaultOptions() {
     return {
@@ -78,6 +79,19 @@ function country(req, res) {
     });
 }
 
+function country2(req, res) {
+    var queryString = _.toLower(req.country);
+    debug(`searching for country ${queryString}`);
+    var results = _.filter(countries, (c) => {
+        var name = _.toLower(c.name.common),
+            name2 = _.toLower(c.name.official);
+        return name.includes(queryString) || name2.includes(queryString);
+    });
+    debug(`got ${results.length} results, limiting to 10`);
+    results = _.take(results, 10);
+    res.send(results);
+}
+
 function reverse(req, res) {
     var lat = req.lat,
         lng = req.lng,
@@ -103,6 +117,7 @@ function reverse(req, res) {
 
 module.exports = {
     city: city,
-    country: country,
+    // country: country,
+    country: country2,
     reverse: reverse
 };

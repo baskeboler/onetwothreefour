@@ -12,6 +12,7 @@
         vm.ok = ok;
         vm.cancel = cancel;
         vm.searchCity = searchCity;
+        vm.searchCountry=searchCountry;
         activate();
 
         ////////////////

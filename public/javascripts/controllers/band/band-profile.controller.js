@@ -13,9 +13,9 @@
             autoDiscover: true,
             zoom: 12
         };
-        vm.slides = _.map(_.range(vm.band.pictures.length), function (index) {
+        vm.slides = _.map(vm.band.pictures, function (id) {
             return {
-                url: '/api/band/' + band._id + '/pictures/' + index
+                url: '/api/band/' + band._id + '/pictures/' + id
             };
         });
         vm.viewBio = viewBio;

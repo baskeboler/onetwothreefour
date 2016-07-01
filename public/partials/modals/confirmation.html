@@ -1,10 +1,11 @@
 <div class="modal-header">
-    <p class="modal-title">
+    <span class="modal-title">
         {{vm.config.title}}
-    </p>
+    </span>
+    <div class="close">&times;</div>
 </div>
 <div class="modal-body">
-    <p>{{vm.config.question}}</p>
+    <p>{{vm.config.message}}</p>
 </div>
 <div class="modal-footer">
     <button class="btn btn-warning" ng-click="vm.cancel()">

@@ -24,13 +24,13 @@
             </form>
             <div class="row" ng-repeat="file in vm.uploads track by $index">
                 {{file.name}}
-                <uib-progressbar percent="vm.progress[$index]" max="100"></uib-progressbar>
+                <uib-progressbar percent="vm.progress[file.name]" max="100"></uib-progressbar>
             </div>
         </div>
     </div>
     <div class="col col-md-9">
         <div masonry>
-            <div class="masonry-brick" ng-repeat="image in vm.imageLinks track by $index">
+            <div class="masonry-brick" prepend="true" ng-repeat="image in vm.imageLinks track by $index">
                 <!--<div class="thumbnail">-->
                     <img ng-src="{{image}}" class="img-responsive" alt="band picture">
                     <!--<div class="caption">
@@ -41,7 +41,7 @@
                             </button>
                         </p>
                     </div>-->
-                    <div class="close">&times;</div>
+                    <div class="close" ng-click="vm.remove($index)">&times;</div>
                 <!--</div>-->
             </div>
         </div>

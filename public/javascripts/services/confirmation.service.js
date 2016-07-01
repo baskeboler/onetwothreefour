@@ -33,7 +33,7 @@
                 controllerAs: 'vm',
                 resolve: {
                     config: function () {
-                        return config;
+                        return configObj;
                     }
                 }
             });

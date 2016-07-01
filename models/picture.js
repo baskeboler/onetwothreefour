@@ -24,7 +24,7 @@ PictureSchema.plugin(crate, {
                 transforms: {
                     original: {
                         // keep the original file
-                        // format: '.jpg'
+                        format: '.jpg'
                     },
                     small: {
                         thumbnail: '150x150',

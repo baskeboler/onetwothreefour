@@ -5,17 +5,16 @@
         .module('app')
         .controller('BandPicturesController', BandPicturesController);
 
-    BandPicturesController.$inject = ['band', '_', 'Upload', '$log', '$q', '$state', '$http'];
-    function BandPicturesController(band, _, Upload, $log, $q, $state, $http) {
+    BandPicturesController.$inject = ['band', '_', 'Upload', '$log', '$q', '$state', '$http', 'Confirmation'];
+    function BandPicturesController(band, _, Upload, $log, $q, $state, $http, Confirmation) {
         var vm = this;
         vm.band = band;
         vm.uploads = [];
         vm.progress = [];
         vm.uploadUrl = '/api/band/' + band._id + '/pictures';
-        vm.pictureIndexes = _.range(vm.band.pictures.length);
-        vm.imageLinks = _.map(vm.pictureIndexes, function (index) {
-            var r = _.random(1, 111111);
-            return '/api/band/' + vm.band._id + '/pictures/' + index + '?size=medium&r=' + r;
+        // vm.pictureIndexes = _.range(vm.band.pictures.length);
+        vm.imageLinks = _.map(vm.band.pictures, function (pictureId) {
+            return vm.uploadUrl + '/' + pictureId + '?size=medium';
         });
         vm.upload = upload;
         vm.remove = remove;
@@ -23,13 +22,18 @@
 
         ////////////////
         function remove(index) {
-            $http.delete(vm.imageLinks[index])
-                .then(function (response) {
-                    $log.info('got updated band: ', response.data);
-                    vm.band=response.data;
-                    vm.imageLinks.splice(index, 1);
-                    vm.pictureIndexes =_.range(vm.band.pictures.length);
-                    resolveLinks();
+            Confirmation.confirm({
+                message: 'Delete this picture permanently?'
+            }).then(
+                function () {
+                    $http.delete(vm.imageLinks[index])
+                        .then(function (response) {
+                            $log.info('got updated band: ', response.data);
+                            vm.band = response.data;
+                            vm.imageLinks.splice(index, 1);
+                            // vm.pictureIndexes = _.range(vm.band.pictures.length);
+                            // resolveLinks();
+                        });
                 });
         }
 
@@ -43,9 +47,9 @@
         function upload() {
             if (vm.uploads && vm.uploads.length > 0) {
                 var promises = [];
+                vm.progress = {};
                 for (var i = 0; i < vm.uploads.length; ++i) {
                     var deferred = $q.defer();
-                    promises.push(deferred.promise);
                     Upload.upload({
                         url: vm.uploadUrl,
                         data: {
@@ -60,12 +64,14 @@
                             deferred.resolve(false);
                         }, function (evt) {
                             var progress = parseInt(100.0 * evt.loaded / evt.total);
-                            vm.progress[i] = progress;
+                            vm.progress[evt.config.data.image.name] = progress;
                             $log.info('progress: ' + progress + '% ' + evt.config.data.image.name);
                         }
-                        );
+                    );
+                    promises.push(deferred.promise);
                 }
-                $q.all(promises).then(function () {
+                var finished = $q.all(promises);
+                $q.when(finished,function () {
                     $log.info('all downloads finished');
                     $state.reload();
                 });
