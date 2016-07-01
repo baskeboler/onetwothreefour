@@ -30,7 +30,7 @@
             });
         }
         function activate() {
-            leafletData.getMap().then(function (map) {
+            leafletData.getMap('band-profile-map').then(function (map) {
                 $log.info('got map');
                 vm.map = map;
             });
