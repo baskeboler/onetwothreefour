@@ -4,6 +4,7 @@ var debug = require('debug')('onetwothreefour:band-controller');
 var _ = require('lodash');
 var Q = require('q');
 var search = require('./search');
+var cloudinary = require('cloudinary');
 
 function all(req, res) {
   var page = req.query.page || 1,
@@ -76,6 +77,18 @@ function getPicture(req, res, next) {
   var bandId = req.bandId;
   var pictureId = req.pictureId;
   var size = req.query.size || 'original'; //original, small, medium
+  var imgOpts = {
+    secure: req.secure
+  };
+  if (size == 'small') {
+    imgOpts.width=100;
+    imgOpts.height=150;
+    imgOpts.crop = 'fill';
+  } else if (size == 'medium') {
+    imgOpts.width=250;  
+    imgOpts.height=300;
+    imgOpts.crop = 'fill';
+  }
   Band.findById(bandId, (err, band) => {
     if (err) {
       handleError(err, res);
@@ -90,7 +103,8 @@ function getPicture(req, res, next) {
       if (f) {
         Picture.findById(pictureId, (err, picture) => {
           if (err) return handleError(err, res);
-          res.redirect(picture.image.url);
+          var url = cloudinary.url(picture.image.url, imgOpts);
+          res.redirect(url);
         });
       } else {
         res.status(404).send({message: 'picture not found'});
