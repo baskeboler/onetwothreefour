@@ -10,6 +10,12 @@ var mongoUri = (isLocal) ?
     : `mongodb://${dbuser}:${dbpassword}@ds023694.mlab.com:23694/onetwothreefour`;
 var uploadsDir = process.env.UPLOADS_DIR || path.join(process.cwd(), 'uploads');
 var tmpDir = process.env.TEMP_DIR || path.join(process.cwd(), 'temp');
+var cloudinaryConfig = {
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'onetwothreefour',
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    url: process.env.CLOUDINARY_URL
+};
 
 var config = {
     mongoUri: mongoUri,
@@ -17,7 +23,8 @@ var config = {
         pageSize: 10
     },
     uploadsDir: uploadsDir,
-    tmpDir: fs.mkdtempSync(tmpDir + path.sep)
+    tmpDir: fs.mkdtempSync(tmpDir + path.sep),
+    cloudinary: cloudinaryConfig
 };
 
 

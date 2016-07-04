@@ -90,7 +90,7 @@ function getPicture(req, res, next) {
       if (f) {
         Picture.findById(pictureId, (err, picture) => {
           if (err) return handleError(err, res);
-          res.sendFile(picture.image[size].url);
+          res.redirect(picture.image.url);
         });
       } else {
         res.status(404).send({message: 'picture not found'});
