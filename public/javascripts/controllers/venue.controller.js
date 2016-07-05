@@ -5,8 +5,11 @@
         .module('app')
         .controller('VenueController', VenueController);
 
-    VenueController.$inject = ['Venue', '_', 'Utilities', 'leafletData', '$uibModal', '$log'];
-    function VenueController(Venue, _, Utilities, leafletData, $uibModal,$log) {
+    VenueController.$inject = [
+        'Venue', '_', 'Utilities',
+        'leafletData', '$uibModal',
+        '$log', 'Notification'];
+    function VenueController(Venue, _, Utilities, leafletData, $uibModal, $log, Notification) {
         var vm = this;
         vm.loadAll = loadAll;
         vm.total = 0;
@@ -15,6 +18,11 @@
         vm.maxPageButtons = 5;
         vm.center = {};
         vm.markers = [];
+        vm.mapDefaults = {
+            scrollWheelZoom: false,
+            doubleClickZoom: false,
+            dragging: false
+        };
         vm.create = create;
         activate();
 
@@ -25,15 +33,21 @@
                 controller: 'VenueDialogController',
                 controllerAs: 'vm',
                 size: 'lg',
-                resolve: { 
-                    venue: function() {
+                resolve: {
+                    venue: function () {
                         return {};
                     }
                 }
             });
-            modal.result.then(function(newVenue) {
-                $log.info('i got a new venue');
-            }, function(reason) {
+            modal.result.then(function (newVenue) {
+                $log.info('i got a new venue', newVenue);
+                Venue.save(newVenue, function () {
+                    Notification.success('Venue created successfully!');
+                    vm.loadAll();
+                }, function () {
+                    Notification.error('Error creating venue.');
+                });
+            }, function (reason) {
                 $log.info('dialog was dismissed');
             });
         }
@@ -50,19 +64,22 @@
                 vm.total = headers('X-Total-Elements');
                 // vm.page = 0;
                 vm.numberOfPages = vm.total / vm.pageSize;
-                var locations = _(venues).map(function (venue) {
+                var locations = _.map(venues, function (venue) {
                     return venue.location;
                 });
-                vm.bb = Utilities.getBoundingBox(locations);
-                vm.map.fitBounds([vm.bb.topLeft, vm.bb.bottomRight]);
+                var latlngs = _.map(locations, function (l) {
+                    return L.latLng(l.coordinates[1], l.coordinates[0]);
+                });
+                // vm.bb = Utilities.getBoundingBox(locations);
+                vm.map.fitBounds(L.latLngBounds(latlngs));
                 vm.markers = _.map(vm.venues, function (v) {
                     return {
                         label: {
                             message: v.name
                         },
                         message: v.name,
-                        lng: v.location.coordinates[1],
-                        lat: v.location.coordinates[0]
+                        lng: v.location.coordinates[0],
+                        lat: v.location.coordinates[1]
                     };
                 });
             });

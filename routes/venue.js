@@ -26,5 +26,7 @@ router.route('/search/:searchString')
 router.route('/:venueId')
   .get(venueController.get)
   .delete(venueController.remove);
+router.route('/:venueId/bandsNearby')
+  .get(venueController.bandsInArea);
 
 module.exports = router;

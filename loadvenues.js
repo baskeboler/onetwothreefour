@@ -16,8 +16,8 @@ var parser = csv({ delimiter: ';' }, function (err, data) {
                 type: 'Point',
                 coordinates: []
             };
-            v.location.coordinates.push(parseFloat(_.replace(r[1], ",", ".")));
-            v.location.coordinates.push(parseFloat(_.replace(r[0], ",", ".")));
+            v.location.coordinates.push(parseFloat(_.replace(r[0], ',', '.')));
+            v.location.coordinates.push(parseFloat(_.replace(r[1], ',', '.')));
             v.capacity =  _.toNumber(r[7]);
             if (_.isNaN(v.capacity)) {
                 v.capacity = undefined;
@@ -37,3 +37,4 @@ var parser = csv({ delimiter: ';' }, function (err, data) {
 });
 
 fs.createReadStream(__dirname + '/registro-locales-bailables.csv').pipe(parser);
+process.stdin.read();

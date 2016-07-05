@@ -5,10 +5,25 @@
         .module('app')
         .controller('VenueProfileController', VenueProfileController);
 
-    VenueProfileController.$inject = ['Venue', 'venue', '$log'];
-    function VenueProfileController(Venue, venue, $log) {
+    VenueProfileController.$inject = ['Venue', 'venue', '$log', '$http', '$q'];
+    function VenueProfileController(Venue, venue, $log,$http, $q) {
         var vm = this;
         vm.venue = venue;
+        vm.center = {
+            zoom: 18,
+            lat: venue.location.coordinates[1],
+            lng: venue.location.coordinates[0]
+        };
+        vm.markers = [{
+            lat: venue.location.coordinates[1],
+            lng: venue.location.coordinates[0],
+            message: venue.name, focus: true
+        }];
+        vm.mapDefaults = {
+            scrollWheelZoom: false,
+            doubleClickZoom: false,
+            dragging: false
+        };
         vm.eventSources = [];
         vm.alertEventOnClick = alertEventOnClick;
         vm.alertOnDrop = alertOnDrop;
@@ -29,9 +44,20 @@
                 dayRender: vm.dayRender
             }
         };
+        vm.bands=[];
         activate();
 
         ////////////////
+        function bandsNearby() {
+            var deferred = $q.defer();
+            var url = '/api/venue/' + vm.venue._id + '/bandsNearby';
+            $http.get(url).then(function(response) {
+                deferred.resolve(response.data);
+            }, function(reason) {
+                deferred.reject(reason);
+            });
+            return deferred.promise;
+        }
 
         function dayRender(date, cell) {
             $log.info('dayRender: ', date, ', ', cell);
@@ -48,6 +74,10 @@
         function alertOnResize() {
 
         }
-        function activate() { }
+        function activate() { 
+            bandsNearby().then(function(bands){
+                vm.bands=bands;
+            });
+        }
     }
 })();

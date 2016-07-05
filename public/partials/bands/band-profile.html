@@ -16,16 +16,16 @@
 
                 <h5 class="panel-title">
                     Current location
+                    <button class="btn btn-default btn-xs" ng-click="vm.saveLocation()">Save location</button>
                     <span ng-click="vm.mapCollapsed=!vm.mapCollapsed;">
                         <i class="glyphicon pull-right" 
                             ng-class="{'glyphicon-minus': !vm.mapCollapsed, 'glyphicon-plus': vm.mapCollapsed}"></i>
                     </span>
-                    
                 </h5>
             </div>
             <div class="panel-body" uib-collapse="vm.mapCollapsed">
 
-                <leaflet id="band-profile-map" center="vm.center" width="100%" height="300px"></leaflet>
+                <leaflet id="band-profile-map" defaults="vm.mapDefaults" center="vm.center" width="100%" height="300px"></leaflet>
             </div>
         </div>
         <div class="panel panel-default" ng-if="vm.slides.length">

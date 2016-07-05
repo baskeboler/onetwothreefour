@@ -3,6 +3,7 @@ var debug = require('debug')('onetwothreefour:venue-controller');
 var _ = require('lodash');
 var Q = require('q');
 var search = require('./search');
+var Band = require('../models/band');
 
 function all(req, res) {
   var page = req.query.page || 1,
@@ -40,14 +41,15 @@ function all(req, res) {
 }
 
 function create(req, res) {
-  var Venue = new Venue(req.body);
+  debug(`request to save ${JSON.stringify(req.body)}`);
+  var venue = new Venue(req.body);
   venue.save(function (err, savedVenue) {
     if (err) {
       debug(err);
       res.status(500).send({ message: 'db error' });
     }
     res.send(savedVenue);
-  })
+  });
 }
 
 function update(req, res) {
@@ -103,11 +105,39 @@ function remove(req, res) {
     }
   });
 }
+
+function bandsInArea(req, res) {
+  var venueId = req.venueId;
+  Venue.findById(venueId, (err, venue) => {
+    if (err) return res.status(500).send(err);
+    if (!venue) return res.status(404).send({ message: 'venue not found' });
+    var location = venue.location;
+    if (location) {
+      Band.find({
+        'lastCheckIn.location': {
+            $near: {
+              $maxDistance: 5000,
+              $geometry: venue.location
+            }
+          }
+      },(err, docs) => {
+          if (err) {
+            debug(err);
+            res.status(500).send({ message: err.message });
+          } else {
+            res.send(docs);
+          }
+        });
+    }
+  });
+}
+
 module.exports = {
   all: all,
   create: create,
   get: get,
   remove: remove,
   update: update,
-  search: search(Venue)
+  search: search(Venue),
+  bandsInArea: bandsInArea
 };

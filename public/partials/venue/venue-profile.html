@@ -1,7 +1,52 @@
 <h3>Venue Profile Page</h3>
 <h4>{{vm.venue.name}}</h4>
-<p>
-    Available bands looking for gigs in your area.
-</p>
-<br>
-<div ui-calendar="vm.uiConfig.calendar" ng-model="vm.eventSources"></div>
+<div class="row">
+    <div class="col col-md-6">
+        <p>
+            Available bands looking for gigs in your area.
+        </p>
+        <br>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">bands in your area</h4>
+            </div>
+            <div class="panel-body">
+                <p>
+                    list of bands
+                </p>
+                <uib-accordion close-others="true">
+                    <uib-accordion-group ng-repeat="band in vm.bands" heading="{{band.name}}">
+                        <div class="btn-group">
+                            <button class="btn btn-default">message</button>
+                            <button class="btn btn-default">view epk</button>
+                            <button class="btn btn-default">view bio</button>
+                            <button class="btn btn-default">reviews</button>
+                            <button class="btn btn-default">book band</button>
+                        </div>
+                    </uib-accordion-group>
+                </uib-accordion>
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="band in vm.bands">
+                            <div class="badge">active</div>
+                        <div class="list-group-item-heading lead">
+                            {{band.name}}
+                        </div>
+                        <div class="list-group-item-text">
+
+                        </div>
+                    </li>
+                    <li class="list-group-item"></li>
+                    <li class="list-group-item"></li>
+                </ul>
+            </div>
+            <div class="panel-footer">
+
+            </div>
+        </div>
+    </div>
+    <div class="col col-md-6">
+        <leaflet id="venue-profile-map" defaults="vm.mapDefaults" center="vm.center" markers="vm.markers"
+                width="100%" height="300px"></leaflet>
+    </div>
+</div>
+<!--<div ui-calendar="vm.uiConfig.calendar" ng-model="vm.eventSources"></div>-->
